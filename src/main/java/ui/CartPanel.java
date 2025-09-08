@@ -68,12 +68,19 @@ public class CartPanel extends JPanel {
         add(bottom, BorderLayout.SOUTH);
     }
 
+    public void refresh() {
+        model.fireTableDataChanged();  // tell JTable the data changed
+        updateTotals();                // update Subtotal/Tax/Total label
+    }
+
+
     private void updateTotals() {
         totalsLabel.setText(String.format(
                 "<html>Subtotal: <b>$%.2f</b> &nbsp; Tax: <b>$%.2f</b> &nbsp; Total: <b>$%.2f</b></html>",
                 cartService.getSubtotal(), cartService.getTax(), cartService.getTotal()
         ));
     }
+
 
     private class CartTableModel extends AbstractTableModel {
         private final String[] cols = {"Product", "Price", "Qty", "Line total"};

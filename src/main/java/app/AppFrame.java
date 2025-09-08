@@ -15,6 +15,8 @@ public class AppFrame extends JFrame {
     private static final String CARD_CART = "cart";
     private static final String CARD_CHECKOUT = "checkout";
 
+    private CartPanel cartPanel;
+
     private final CardLayout layout = new CardLayout();
     private final JPanel root = new JPanel(layout);
 
@@ -34,10 +36,12 @@ public class AppFrame extends JFrame {
 
         ProductCatalogPanel catalog = new ProductCatalogPanel(
                 productService.getAll(),
-                p -> { cartService.add(p); updateCartBadge(); }
+                p -> { cartService.add(p); updateCartBadge();if (cartPanel != null) {
+                    cartPanel.refresh();
+                } }
         );
 
-        CartPanel cartPanel = new CartPanel(
+         cartPanel = new CartPanel(
                 cartService,
                 () -> { updateCartBadge(); showCart(); },
                 this::showCheckout
@@ -95,6 +99,8 @@ public class AppFrame extends JFrame {
     }
 
     private void showCatalog() { layout.show(root, CARD_CATALOG); }
-    private void showCart() { layout.show(root, CARD_CART); }
-    private void showCheckout() { layout.show(root, CARD_CHECKOUT); }
+    private void showCart() {
+        if (cartPanel != null) cartPanel.refresh(); // make JTable re-read data
+        layout.show(root, CARD_CART);
+    }    private void showCheckout() { layout.show(root, CARD_CHECKOUT); }
 }
