@@ -4,12 +4,16 @@ public class Product {
     private final int id;
     private final String name;
     private final double price;
+    private final String imagePath;
 
-    public Product(int id, String name, double price) {
-        this.id = id; this.name = name; this.price = price;
+
+    public Product(int id, String name, double price, String imagePath) {
+        this.id = id; this.name = name; this.price = price; this.imagePath= imagePath;
     }
 
     public int getId() { return id; }
     public String getName() { return name; }
     public double getPrice() { return price; }
+    public String getImagePath() { return imagePath; }
+
 }
