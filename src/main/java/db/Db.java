@@ -58,12 +58,12 @@ public class Db {
                 if (rs.getInt(1) == 0) {
                     s.execute("""
                         INSERT INTO products(id,name,price,image_path) VALUES
-                          (1,'Laptop 14" Pro',1299.00,'laptop14pro.jpg'),
+                          (1,'Laptop 14',1299.00,'laptop14.jpg'),
                           (2,'Noise-Cancel Headphones',179.00,'headphones.jpg'),
-                          (3,'Smartphone X',899.00,'smartphone.jpg'),
+                          (3,'Iphone 15',899.00,'iphone15.jpg'),
                           (4,'Mechanical Keyboard',89.00,'keyboard.jpg'),
                           (5,'USB-C Dock',129.00,'dock.jpg'),
-                          (6,'4K Monitor 27"',349.00,'monitor27.jpg');
+                          (6,'4K Monitor 27"',349.00,'monitor.jpg');
                     """);
                 }
             }
