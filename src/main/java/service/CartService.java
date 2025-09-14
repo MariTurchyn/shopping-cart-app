@@ -3,13 +3,14 @@ package service;
 import model.CartItem;
 import model.Product;
 
+import util.Pricing;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class CartService {
     private final List<CartItem> items = new ArrayList<>();
-    private double taxRate = 0.17; // 17% VAT example
 
     public List<CartItem> getItems() { return items; }
     public void clear() { items.clear(); }
@@ -68,12 +69,11 @@ public class CartService {
     }
 
     public double getTax() {
-        return round2(getSubtotal() * taxRate);
+        return Pricing.tax(getSubtotal());
     }
 
     public double getTotal() {
-        return round2(getSubtotal() + getTax());
+        return Pricing.total(getSubtotal());
     }
 
-    private double round2(double v) { return Math.round(v * 100.0) / 100.0; }
 }
