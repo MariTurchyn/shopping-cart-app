@@ -6,7 +6,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CheckoutPanel extends JPanel {
+    private final CartService cartService;
+    private final JLabel summary = new JLabel();
+
     public CheckoutPanel(CartService cartService, Runnable onPlaceOrder) {
+        this.cartService = cartService;
+
         setLayout(new BorderLayout(10,10));
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
@@ -32,12 +37,7 @@ public class CheckoutPanel extends JPanel {
 
         add(form, BorderLayout.CENTER);
 
-        JLabel summary = new JLabel(String.format(
-                "<html>Subtotal: <b>$%.2f</b> &nbsp; Tax: <b>$%.2f</b> &nbsp; Total: <b>$%.2f</b></html>",
-                cartService.getSubtotal(), cartService.getTax(), cartService.getTotal()
-        ));
         JButton placeOrder = new JButton("Place Order");
-
         placeOrder.addActionListener(e -> {
             if (name.getText().isBlank() || address.getText().isBlank()
                     || city.getText().isBlank() || zip.getText().isBlank()) {
@@ -51,5 +51,14 @@ public class CheckoutPanel extends JPanel {
         bottom.add(summary);
         bottom.add(placeOrder);
         add(bottom, BorderLayout.SOUTH);
+
+        refreshTotals(); // set initial values
+    }
+
+    public void refreshTotals() {
+        summary.setText(String.format(
+                "<html>Subtotal: <b>$%.2f</b> &nbsp; Tax: <b>$%.2f</b> &nbsp; Total: <b>$%.2f</b></html>",
+                cartService.getSubtotal(), cartService.getTax(), cartService.getTotal()
+        ));
     }
 }

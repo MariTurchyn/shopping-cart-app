@@ -1,6 +1,5 @@
 package app;
 
-import model.Product;
 import service.CartService;
 import service.ProductService;
 import ui.CartPanel;
@@ -16,6 +15,7 @@ public class AppFrame extends JFrame {
     private static final String CARD_CHECKOUT = "checkout";
 
     private CartPanel cartPanel;
+    private CheckoutPanel checkoutPanel; // ← make it a field
 
     private final CardLayout layout = new CardLayout();
     private final JPanel root = new JPanel(layout);
@@ -36,18 +36,21 @@ public class AppFrame extends JFrame {
 
         ProductCatalogPanel catalog = new ProductCatalogPanel(
                 productService.getAll(),
-                p -> { cartService.add(p); updateCartBadge();if (cartPanel != null) {
-                    cartPanel.refresh();
-                } }
+                p -> {
+                    cartService.add(p);
+                    updateCartBadge();
+                    if (cartPanel != null) cartPanel.refresh();
+                    if (checkoutPanel != null) checkoutPanel.refreshTotals(); // keep checkout up to date
+                }
         );
 
-         cartPanel = new CartPanel(
+        cartPanel = new CartPanel(
                 cartService,
                 () -> { updateCartBadge(); showCart(); },
                 this::showCheckout
         );
 
-        CheckoutPanel checkoutPanel = new CheckoutPanel(
+        checkoutPanel = new CheckoutPanel( // ← assign the field
                 cartService,
                 () -> {
                     JOptionPane.showMessageDialog(this, "Order placed! Thank you ❤️");
@@ -98,9 +101,17 @@ public class AppFrame extends JFrame {
         cartBadge.setText("Cart: " + cartService.getItemCount() + " • Total $" + cartService.getTotal());
     }
 
-    private void showCatalog() { layout.show(root, CARD_CATALOG); }
+    private void showCatalog() {
+        layout.show(root, CARD_CATALOG);
+    }
+
     private void showCart() {
         if (cartPanel != null) cartPanel.refresh(); // make JTable re-read data
         layout.show(root, CARD_CART);
-    }    private void showCheckout() { layout.show(root, CARD_CHECKOUT); }
+    }
+
+    private void showCheckout() {
+        if (checkoutPanel != null) checkoutPanel.refreshTotals(); // ← refresh totals here
+        layout.show(root, CARD_CHECKOUT);
+    }
 }
