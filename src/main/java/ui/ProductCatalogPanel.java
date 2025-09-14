@@ -1,6 +1,7 @@
 package ui;
 
 import model.Product;
+import ui.ImageUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +28,7 @@ public class ProductCatalogPanel extends JPanel {
         add(scroll, BorderLayout.CENTER);
     }
 
-    private JComponent createCard(Product p, java.util.function.Consumer<Product> onAdd) {
+    private JComponent createCard(Product p, Consumer<Product> onAdd) {
         JPanel card = new JPanel(new BorderLayout());
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(230,230,230)),
@@ -41,17 +42,14 @@ public class ProductCatalogPanel extends JPanel {
         top.add(name);
         top.add(price);
 
+        JLabel pic = new JLabel(ImageUtil.load(p.getImagePath(), 280, 170));
+        pic.setHorizontalAlignment(SwingConstants.CENTER);
+
         JButton addBtn = new JButton("Add to cart");
         addBtn.addActionListener(e -> onAdd.accept(p));
 
-        // placeholder “image”
-        JPanel mockImage = new JPanel();
-        mockImage.setPreferredSize(new Dimension(200, 120));
-        mockImage.setBackground(new Color(245, 248, 255));
-        mockImage.add(new JLabel("Image"));
-
         card.add(top, BorderLayout.NORTH);
-        card.add(mockImage, BorderLayout.CENTER);
+        card.add(pic, BorderLayout.CENTER);
         card.add(addBtn, BorderLayout.SOUTH);
         return card;
     }
