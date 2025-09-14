@@ -1,7 +1,7 @@
 package ui;
 
 import model.Product;
-import ui.ImageUtil;
+import util.ImageUtil;
 
 import javax.swing.*;
 import java.awt.*;
